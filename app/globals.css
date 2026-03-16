@@ -1,26 +1,257 @@
+/* ─── Google Fonts ─────────────────────────────────────────────────────────── */
+@import url("https://fonts.googleapis.com/css2?family=Dancing+Script:wght@400;500;600;700&family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&family=Lato:wght@300;400;700&display=swap");
+
 @import "tailwindcss";
 
+/* ─── CSS Custom Properties ────────────────────────────────────────────────── */
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+    /* Brand colors */
+    --color-primary: #d9c19d;
+    --color-primary-light: #ead8bb;
+    --color-primary-dark: #c4a97a;
+    --color-secondary: #724a24;
+    --color-secondary-dark: #4e3218;
+
+    /* Neutral warm tones */
+    --color-cream: #faf5ed;
+    --color-parchment: #f2e8d5;
+    --color-sand: #e8d5b5;
+    --color-brown-light: #a0714f;
+    --color-brown: #724a24;
+    --color-brown-dark: #3e2810;
+
+    /* Text */
+    --color-text-primary: #3e2810;
+    --color-text-secondary: #724a24;
+    --color-text-muted: #a0714f;
+
+    /* Backgrounds */
+    --color-bg: #faf5ed;
+    --color-bg-card: #fdf8f0;
+
+    /* Fonts */
+    --font-handwritten: "Dancing Script", cursive;
+    --font-serif: "Playfair Display", Georgia, serif;
+    --font-sans: "Lato", sans-serif;
 }
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+/* ─── Reset & Base ─────────────────────────────────────────────────────────── */
+*,
+*::before,
+*::after {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+html {
+    scroll-behavior: smooth;
+    -webkit-text-size-adjust: 100%;
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+    background-color: var(--color-bg);
+    color: var(--color-text-primary);
+    font-family: var(--font-serif);
+    line-height: 1.7;
+    overflow-x: hidden;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
 }
+
+/* ─── Tailwind Theme Tokens ────────────────────────────────────────────────── */
+@theme inline {
+    --color-background: var(--color-bg);
+    --color-foreground: var(--color-text-primary);
+    --font-handwritten: var(--font-handwritten);
+    --font-serif: var(--font-serif);
+    --font-sans: var(--font-sans);
+}
+
+/* ─── Typography Utilities ─────────────────────────────────────────────────── */
+.font-handwritten {
+    font-family: var(--font-handwritten);
+}
+
+.font-serif {
+    font-family: var(--font-serif);
+}
+
+.font-sans {
+    font-family: var(--font-sans);
+}
+
+/* ─── Chapter Layout ────────────────────────────────────────────────────────── */
+.chapter-section {
+    min-height: 100dvh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 2rem 1.25rem;
+    position: relative;
+}
+
+/* ─── Scrollbar Styling ─────────────────────────────────────────────────────── */
+::-webkit-scrollbar {
+    width: 6px;
+}
+
+::-webkit-scrollbar-track {
+    background: var(--color-parchment);
+}
+
+::-webkit-scrollbar-thumb {
+    background: var(--color-primary);
+    border-radius: 3px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: var(--color-secondary);
+}
+
+/* ─── Selection ─────────────────────────────────────────────────────────────── */
+::selection {
+    background-color: var(--color-primary);
+    color: var(--color-brown-dark);
+}
+
+/* ─── Shake Animation (password gate) ──────────────────────────────────────── */
+@keyframes shake {
+    0%,
+    100% {
+        transform: translateX(0);
+    }
+    15% {
+        transform: translateX(-8px);
+    }
+    30% {
+        transform: translateX(8px);
+    }
+    45% {
+        transform: translateX(-6px);
+    }
+    60% {
+        transform: translateX(6px);
+    }
+    75% {
+        transform: translateX(-3px);
+    }
+    90% {
+        transform: translateX(3px);
+    }
+}
+
+.animate-shake {
+    animation: shake 0.55s cubic-bezier(0.36, 0.07, 0.19, 0.97) both;
+}
+
+/* ─── Fade‑in Animation ─────────────────────────────────────────────────────── */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(12px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.animate-fade-in {
+    animation: fadeIn 0.7s ease forwards;
+}
+
+/* ─── Petal / Sparkle float ─────────────────────────────────────────────────── */
+@keyframes float {
+    0%,
+    100% {
+        transform: translateY(0px) rotate(0deg);
+    }
+    50% {
+        transform: translateY(-10px) rotate(5deg);
+    }
+}
+
+.animate-float {
+    animation: float 4s ease-in-out infinite;
+}
+
+/* ─── Soft pulse ─────────────────────────────────────────────────────────────── */
+@keyframes softPulse {
+    0%,
+    100% {
+        opacity: 1;
+    }
+    50% {
+        opacity: 0.6;
+    }
+}
+
+.animate-soft-pulse {
+    animation: softPulse 2.5s ease-in-out infinite;
+}
+
+/* ─── Glass / Card shared styles ────────────────────────────────────────────── */
+.card-warm {
+    background-color: var(--color-bg-card);
+    border: 1px solid var(--color-sand);
+    border-radius: 1rem;
+    box-shadow: 0 4px 24px rgba(114, 74, 36, 0.08);
+}
+
+/* ─── Input warm style ──────────────────────────────────────────────────────── */
+.input-warm {
+    background-color: var(--color-parchment);
+    border: 1.5px solid var(--color-primary);
+    border-radius: 0.5rem;
+    color: var(--color-text-primary);
+    font-family: var(--font-serif);
+    padding: 0.75rem 1.25rem;
+    outline: none;
+    transition:
+        border-color 0.2s,
+        box-shadow 0.2s;
+    width: 100%;
+}
+
+.input-warm:focus {
+    border-color: var(--color-secondary);
+    box-shadow: 0 0 0 3px rgba(217, 193, 157, 0.35);
+}
+
+.input-warm::placeholder {
+    color: var(--color-text-muted);
+    font-style: italic;
+}
+
+/* ─── Button warm style ─────────────────────────────────────────────────────── */
+.btn-warm {
+    background-color: var(--color-secondary);
+    color: var(--color-cream);
+    font-family: var(--font-handwritten);
+    font-size: 1.15rem;
+    font-weight: 600;
+    letter-spacing: 0.03em;
+    border: none;
+    border-radius: 2rem;
+    padding: 0.75rem 2.5rem;
+    cursor: pointer;
+    transition:
+        background-color 0.2s,
+        transform 0.15s,
+        box-shadow 0.2s;
+    box-shadow: 0 2px 12px rgba(114, 74, 36, 0.2);
+}
+
+.btn-warm:hover {
+    background-color: var(--color-secondary-dark);
+    transform: translateY(-1px);
+    box-shadow: 0 4px 16px rgba(114, 74, 36, 0.3);
+}
+
+.btn-warm:active {
+    transform: translateY(0);
+}
+
+/* ─── No dark-mode override — keep warm tones always ───────────────────────── */
