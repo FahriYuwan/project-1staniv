@@ -4,21 +4,307 @@
    The very first screen the visitor sees.
    - Correct password "pippipupu" → navigates to /story
    - Wrong password          → subtle shake + error message
-   - Uses Framer Motion for entrance animations
+   - Countdown popup         → appears 1.5 s after load, can be minimized
+                               to a small floating widget and reopened
 ────────────────────────────────────────────────────────────────────────────── */
 
 import { useState, useRef, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { motion, AnimatePresence } from "framer-motion";
+import CountdownTimer from "./components/CountdownTimer";
 
 const CORRECT_PASSWORD = "pippipupu";
 
-/* ── Small decorative floating petal ── */
+/* ─────────────────────────────────────────────────────────────────────────────
+   COUNTDOWN POPUP — full centered modal
+   Centering is done by a static flexbox wrapper so that Framer Motion's
+   JS-driven transforms (scale / y) never conflict with translate(-50%,-50%).
+───────────────────────────────────────────────────────────────────────────── */
+function CountdownModal({ onMinimize }: { onMinimize: () => void }) {
+  return (
+    <>
+      {/* Backdrop */}
+      <motion.div
+        key="cd-backdrop"
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        exit={{ opacity: 0 }}
+        transition={{ duration: 0.3 }}
+        onClick={onMinimize}
+        aria-hidden="true"
+        style={{
+          position: "fixed",
+          inset: 0,
+          backgroundColor: "rgba(62, 40, 16, 0.35)",
+          backdropFilter: "blur(4px)",
+          WebkitBackdropFilter: "blur(4px)",
+          zIndex: 80,
+        }}
+      />
+
+      {/* Static centering wrapper — no animation, just flexbox */}
+      <div
+        style={{
+          position: "fixed",
+          inset: 0,
+          zIndex: 90,
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+          padding: "0 1.25rem",
+          pointerEvents: "none",
+        }}
+      >
+        {/* Animated modal card */}
+        <motion.div
+          key="cd-modal"
+          role="dialog"
+          aria-modal="true"
+          aria-label="Anniversary countdown timer"
+          initial={{ opacity: 0, scale: 0.88, y: 28 }}
+          animate={{ opacity: 1, scale: 1, y: 0 }}
+          exit={{ opacity: 0, scale: 0.72, y: 48, x: -32 }}
+          transition={{
+            type: "spring",
+            stiffness: 280,
+            damping: 26,
+            mass: 0.9,
+          }}
+          style={{
+            pointerEvents: "auto",
+            width: "100%",
+            maxWidth: 340,
+            backgroundColor: "var(--color-parchment)",
+            border: "1.5px solid var(--color-primary)",
+            borderRadius: "1.5rem",
+            padding: "1.5rem 1.5rem 1.75rem",
+            boxShadow:
+              "0 12px 48px rgba(62, 40, 16, 0.28), 0 4px 16px rgba(62,40,16,0.1)",
+          }}
+        >
+          {/* ── Header row ── */}
+          <div
+            style={{
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "space-between",
+              marginBottom: "1.25rem",
+            }}
+          >
+            <div
+              style={{ display: "flex", alignItems: "center", gap: "0.5rem" }}
+            >
+              <span
+                aria-hidden="true"
+                style={{ fontSize: "1.1rem", lineHeight: 1 }}
+              >
+                🌸
+              </span>
+              <p
+                className="font-sans"
+                style={{
+                  fontSize: "0.6rem",
+                  textTransform: "uppercase",
+                  letterSpacing: "0.14em",
+                  color: "var(--color-text-muted)",
+                }}
+              >
+                Our Anniversary
+              </p>
+            </div>
+
+            {/* X / minimize button */}
+            <motion.button
+              onClick={onMinimize}
+              aria-label="Minimize countdown"
+              whileHover={{ scale: 1.1 }}
+              whileTap={{ scale: 0.92 }}
+              style={{
+                width: 28,
+                height: 28,
+                borderRadius: "50%",
+                backgroundColor: "var(--color-cream)",
+                border: "1.5px solid var(--color-primary)",
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+                cursor: "pointer",
+                fontSize: "0.68rem",
+                color: "var(--color-secondary)",
+                flexShrink: 0,
+                transition: "background-color 0.15s",
+              }}
+            >
+              ✕
+            </motion.button>
+          </div>
+
+          {/* ── Title & names ── */}
+          <div
+            style={{
+              textAlign: "center",
+              marginBottom: "1.25rem",
+            }}
+          >
+            <p
+              className="font-handwritten"
+              style={{
+                fontSize: "clamp(1.4rem, 6vw, 1.75rem)",
+                color: "var(--color-secondary)",
+                lineHeight: 1.15,
+                marginBottom: "0.2rem",
+              }}
+            >
+              Happy 1st Anniversary
+            </p>
+            <p
+              className="font-serif"
+              style={{
+                fontSize: "0.82rem",
+                color: "var(--color-text-muted)",
+                fontStyle: "italic",
+              }}
+            >
+              Fahri Yuwan &amp; Anggi
+            </p>
+          </div>
+
+          {/* ── Decorative divider ── */}
+          <div
+            aria-hidden="true"
+            style={{
+              height: 1,
+              width: "60%",
+              margin: "0 auto 1.25rem",
+              background:
+                "linear-gradient(90deg, transparent, var(--color-primary), transparent)",
+            }}
+          />
+
+          {/* ── Countdown timer ── */}
+          <CountdownTimer />
+
+          {/* ── Date label ── */}
+          <p
+            className="font-sans"
+            style={{
+              fontSize: "0.62rem",
+              textTransform: "uppercase",
+              letterSpacing: "0.12em",
+              color: "var(--color-text-muted)",
+              textAlign: "center",
+              marginTop: "1rem",
+            }}
+          >
+            📅 March 20, 2026
+          </p>
+
+          {/* ── Minimize hint ── */}
+          <p
+            className="font-sans"
+            style={{
+              fontSize: "0.58rem",
+              color: "var(--color-text-muted)",
+              textAlign: "center",
+              marginTop: "0.65rem",
+              letterSpacing: "0.04em",
+              opacity: 0.75,
+            }}
+          >
+            tap ✕ to minimize
+          </p>
+        </motion.div>
+      </div>
+    </>
+  );
+}
+
+/* ─────────────────────────────────────────────────────────────────────────────
+   COUNTDOWN WIDGET — minimized corner pill
+   Sits at bottom-left, shows days remaining, click to reopen.
+───────────────────────────────────────────────────────────────────────────── */
+function CountdownWidget({
+  onExpand,
+  daysLeft,
+}: {
+  onExpand: () => void;
+  daysLeft: number;
+}) {
+  return (
+    <motion.button
+      onClick={onExpand}
+      aria-label={`${daysLeft} days to our anniversary — tap to expand`}
+      initial={{ scale: 0.6, opacity: 0, y: 20 }}
+      animate={{ scale: 1, opacity: 1, y: 0 }}
+      exit={{ scale: 0.6, opacity: 0, y: 20 }}
+      transition={{ type: "spring", stiffness: 320, damping: 24, mass: 0.85 }}
+      whileHover={{ scale: 1.06, y: -3 }}
+      whileTap={{ scale: 0.95 }}
+      style={{
+        position: "fixed",
+        bottom: "1.25rem",
+        left: "1.25rem",
+        zIndex: 90,
+        display: "flex",
+        alignItems: "center",
+        gap: "0.6rem",
+        backgroundColor: "var(--color-parchment)",
+        border: "1.5px solid var(--color-primary)",
+        borderRadius: "1rem",
+        padding: "0.6rem 1rem 0.6rem 0.75rem",
+        boxShadow: "0 4px 22px rgba(114, 74, 36, 0.24)",
+        cursor: "pointer",
+        transformOrigin: "bottom left",
+      }}
+    >
+      {/* Icon */}
+      <motion.span
+        aria-hidden="true"
+        animate={{ scale: [1, 1.15, 1] }}
+        transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
+        style={{ fontSize: "1.15rem", lineHeight: 1, flexShrink: 0 }}
+      >
+        🌸
+      </motion.span>
+
+      {/* Text */}
+      <div style={{ textAlign: "left" }}>
+        <p
+          className="font-handwritten"
+          style={{
+            fontSize: "1rem",
+            color: "var(--color-secondary)",
+            lineHeight: 1.2,
+            fontWeight: 600,
+          }}
+        >
+          {daysLeft} days
+        </p>
+        <p
+          className="font-sans"
+          style={{
+            fontSize: "0.56rem",
+            textTransform: "uppercase",
+            letterSpacing: "0.1em",
+            color: "var(--color-text-muted)",
+            marginTop: "1px",
+          }}
+        >
+          to anniversary ↑
+        </p>
+      </div>
+    </motion.button>
+  );
+}
+
+/* ─────────────────────────────────────────────────────────────────────────────
+   DECORATIVE PETALS
+───────────────────────────────────────────────────────────────────────────── */
 function Petal({ style, char }: { style: React.CSSProperties; char: string }) {
   return (
     <span
       aria-hidden="true"
-      className="pointer-events-none absolute select-none text-2xl opacity-30 animate-float"
+      className="pointer-events-none absolute select-none opacity-30 animate-float"
       style={style}
     >
       {char}
@@ -26,7 +312,6 @@ function Petal({ style, char }: { style: React.CSSProperties; char: string }) {
   );
 }
 
-/* ── Decorative petals scattered in background ── */
 const PETALS = [
   {
     char: "🌸",
@@ -44,7 +329,12 @@ const PETALS = [
   },
   {
     char: "🌸",
-    style: { top: "72%", left: "5%", animationDelay: "1.4s", fontSize: "1rem" },
+    style: {
+      top: "72%",
+      left: "5%",
+      animationDelay: "1.4s",
+      fontSize: "1rem",
+    },
   },
   {
     char: "✿",
@@ -58,7 +348,12 @@ const PETALS = [
   },
   {
     char: "🌸",
-    style: { top: "45%", left: "3%", animationDelay: "2s", fontSize: "0.9rem" },
+    style: {
+      top: "45%",
+      left: "3%",
+      animationDelay: "2s",
+      fontSize: "0.9rem",
+    },
   },
   {
     char: "✿",
@@ -91,45 +386,88 @@ const PETALS = [
   },
 ];
 
+/* ─────────────────────────────────────────────────────────────────────────────
+   LOADING DOTS
+───────────────────────────────────────────────────────────────────────────── */
+function LoadingDots() {
+  return (
+    <span className="flex gap-[3px]" aria-hidden="true">
+      {[0, 1, 2].map((i) => (
+        <motion.span
+          key={i}
+          className="inline-block rounded-full"
+          style={{ width: 5, height: 5, backgroundColor: "var(--color-cream)" }}
+          animate={{ y: [0, -4, 0] }}
+          transition={{
+            duration: 0.7,
+            repeat: Infinity,
+            delay: i * 0.15,
+            ease: "easeInOut",
+          }}
+        />
+      ))}
+    </span>
+  );
+}
+
+/* ─────────────────────────────────────────────────────────────────────────────
+   PASSWORD GATE PAGE
+───────────────────────────────────────────────────────────────────────────── */
 export default function PasswordGatePage() {
   const router = useRouter();
 
+  /* ── Password form state ── */
   const [password, setPassword] = useState("");
   const [shaking, setShaking] = useState(false);
   const [error, setError] = useState(false);
   const [loading, setLoading] = useState(false);
   const [showInput, setShowInput] = useState(false);
 
+  /* ── Countdown popup state ── */
+  const [countdownVisible, setCountdownVisible] = useState(false);
+  const [countdownMinimized, setCountdownMinimized] = useState(false);
+
   const inputRef = useRef<HTMLInputElement>(null);
 
-  /* Delay showing the input so the entrance animation finishes first */
+  /* Delay the password input so entrance animation finishes first */
   useEffect(() => {
     const t = setTimeout(() => setShowInput(true), 900);
     return () => clearTimeout(t);
   }, []);
 
-  /* Auto-focus when input appears */
+  /* Auto-focus input when it appears */
   useEffect(() => {
     if (showInput) {
       setTimeout(() => inputRef.current?.focus(), 100);
     }
   }, [showInput]);
 
+  /* Show countdown popup 1.5 s after the page loads */
+  useEffect(() => {
+    const t = setTimeout(() => setCountdownVisible(true), 1500);
+    return () => clearTimeout(t);
+  }, []);
+
+  /* Days remaining for the minimized widget label */
+  const daysLeft = Math.max(
+    0,
+    Math.floor(
+      (new Date("2026-03-20T00:00:00").getTime() - Date.now()) /
+        (1000 * 60 * 60 * 24),
+    ),
+  );
+
+  /* ── Password submit handler ── */
   function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
-
     if (loading) return;
 
     if (password.toLowerCase().trim() === CORRECT_PASSWORD) {
-      /* ── Correct password ── */
       setError(false);
       setLoading(true);
-      /* Set the auth flag so the story page knows the gate was passed */
       sessionStorage.setItem("anniversary_auth", "true");
-      /* Brief pause to let the loading state render before navigating */
       setTimeout(() => router.push("/story"), 700);
     } else {
-      /* ── Wrong password ── */
       setError(true);
       setShaking(true);
       setPassword("");
@@ -148,7 +486,7 @@ export default function PasswordGatePage() {
           "linear-gradient(160deg, #fdf8f0 0%, #f5e9d0 50%, #ede0c4 100%)",
       }}
     >
-      {/* ── Background decorative petals ── */}
+      {/* ── Decorative background petals ── */}
       {PETALS.map((p, i) => (
         <Petal key={i} char={p.char} style={p.style} />
       ))}
@@ -168,7 +506,9 @@ export default function PasswordGatePage() {
         }}
       />
 
-      {/* ── Main card ── */}
+      {/* ════════════════════════════════════════════════════════════════════
+          MAIN PASSWORD CARD
+      ════════════════════════════════════════════════════════════════════ */}
       <motion.div
         initial={{ opacity: 0, y: 32, scale: 0.96 }}
         animate={{ opacity: 1, y: 0, scale: 1 }}
@@ -350,32 +690,33 @@ export default function PasswordGatePage() {
       >
         — with love, always —
       </motion.p>
-    </main>
-  );
-}
 
-/* ── Tiny animated loading dots ── */
-function LoadingDots() {
-  return (
-    <span className="flex gap-[3px]" aria-hidden="true">
-      {[0, 1, 2].map((i) => (
-        <motion.span
-          key={i}
-          className="inline-block rounded-full"
-          style={{
-            width: 5,
-            height: 5,
-            backgroundColor: "var(--color-cream)",
-          }}
-          animate={{ y: [0, -4, 0] }}
-          transition={{
-            duration: 0.7,
-            repeat: Infinity,
-            delay: i * 0.15,
-            ease: "easeInOut",
-          }}
-        />
-      ))}
-    </span>
+      {/* ════════════════════════════════════════════════════════════════════
+          COUNTDOWN POPUP — full modal (open state)
+          Appears 1.5 s after load. X minimizes it to the widget below.
+      ════════════════════════════════════════════════════════════════════ */}
+      <AnimatePresence>
+        {countdownVisible && !countdownMinimized && (
+          <CountdownModal
+            key="countdown-modal-open"
+            onMinimize={() => setCountdownMinimized(true)}
+          />
+        )}
+      </AnimatePresence>
+
+      {/* ════════════════════════════════════════════════════════════════════
+          COUNTDOWN WIDGET — minimized corner pill
+          Tap to reopen the full modal.
+      ════════════════════════════════════════════════════════════════════ */}
+      <AnimatePresence>
+        {countdownVisible && countdownMinimized && (
+          <CountdownWidget
+            key="countdown-widget"
+            onExpand={() => setCountdownMinimized(false)}
+            daysLeft={daysLeft}
+          />
+        )}
+      </AnimatePresence>
+    </main>
   );
 }

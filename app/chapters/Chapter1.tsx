@@ -2,18 +2,18 @@
 
 /* ─── Chapter 1: Opening ──────────────────────────────────────────────────────
    The very first chapter the visitor sees after unlocking the site.
-   - Animated entrance for the retro photo frame
-   - Names + relationship date
-   - Live countdown timer to March 20 2026 (first anniversary)
+   - Animated entrance for the retro polaroid photo frame
+   - Names + relationship start date badge
+   - Story invitation with animated swipe / arrow prompt
+   NOTE: The countdown timer has been moved to the password gate page.
 ────────────────────────────────────────────────────────────────────────────── */
 
 import Image from "next/image";
 import { motion } from "framer-motion";
-import CountdownTimer from "../components/CountdownTimer";
 
-/* Stagger helper for child elements */
+/* ── Stagger helper for child elements ── */
 const fadeUp = {
-  hidden: { opacity: 0, y: 20 },
+  hidden: { opacity: 0, y: 22 },
   show: (i: number) => ({
     opacity: 1,
     y: 0,
@@ -27,10 +27,7 @@ const fadeUp = {
 
 export default function Chapter1() {
   return (
-    <div
-      className="chapter-section"
-      style={{ gap: "1.75rem", paddingTop: "5rem", paddingBottom: "5rem" }}
-    >
+    <div className="chapter-section" style={{ gap: "1.75rem" }}>
       {/* ── Chapter label ── */}
       <motion.p
         custom={0}
@@ -56,7 +53,7 @@ export default function Chapter1() {
         animate="show"
         style={{ position: "relative" }}
       >
-        {/* Slight tilt shadow layer (depth) */}
+        {/* Tilt shadow layer for depth */}
         <div
           aria-hidden="true"
           style={{
@@ -83,7 +80,7 @@ export default function Chapter1() {
             width: "min(270px, 78vw)",
           }}
         >
-          {/* Photo inside frame */}
+          {/* Photo */}
           <div
             style={{
               position: "relative",
@@ -103,7 +100,7 @@ export default function Chapter1() {
               style={{ objectFit: "cover" }}
             />
 
-            {/* Subtle warm tint overlay on photo */}
+            {/* Subtle warm tint overlay */}
             <div
               aria-hidden="true"
               style={{
@@ -116,7 +113,7 @@ export default function Chapter1() {
             />
           </div>
 
-          {/* Polaroid caption area */}
+          {/* Polaroid caption */}
           <div
             style={{
               height: 40,
@@ -179,7 +176,7 @@ export default function Chapter1() {
             display: "inline-flex",
             alignItems: "center",
             gap: "0.4rem",
-            marginTop: "0.6rem",
+            marginTop: "0.65rem",
             backgroundColor: "var(--color-parchment)",
             border: "1px solid var(--color-primary)",
             borderRadius: "2rem",
@@ -203,7 +200,7 @@ export default function Chapter1() {
         </div>
       </motion.div>
 
-      {/* ── Divider ── */}
+      {/* ── Decorative divider ── */}
       <motion.div
         custom={3}
         variants={fadeUp}
@@ -212,37 +209,98 @@ export default function Chapter1() {
         aria-hidden="true"
         style={{
           height: 1,
-          width: "min(240px, 70vw)",
+          width: "min(200px, 60vw)",
           background:
             "linear-gradient(90deg, transparent, var(--color-primary), transparent)",
         }}
       />
 
-      {/* ── Countdown section ── */}
+      {/* ── Story invitation ── */}
       <motion.div
         custom={4}
         variants={fadeUp}
         initial="hidden"
         animate="show"
-        style={{ textAlign: "center", width: "100%", maxWidth: 340 }}
+        style={{
+          textAlign: "center",
+          display: "flex",
+          flexDirection: "column",
+          alignItems: "center",
+          gap: "0.75rem",
+        }}
       >
         <p
           className="font-serif"
           style={{
-            fontSize: "0.78rem",
+            fontSize: "clamp(0.84rem, 3.5vw, 0.95rem)",
             color: "var(--color-text-muted)",
             fontStyle: "italic",
-            marginBottom: "0.85rem",
-            letterSpacing: "0.02em",
+            maxWidth: 250,
+            lineHeight: 1.75,
           }}
         >
-          Counting down to our first anniversary…
+          A year of moments, big and small.
+          <br />
+          Swipe through our story.
         </p>
 
-        <CountdownTimer />
+        {/* Animated swipe / arrow hint */}
+        <div
+          aria-hidden="true"
+          style={{ display: "flex", alignItems: "center", gap: "0.45rem" }}
+        >
+          {/* Left bounce arrow */}
+          <motion.span
+            animate={{ x: [-4, 0, -4] }}
+            transition={{
+              duration: 1.3,
+              repeat: Infinity,
+              ease: "easeInOut",
+              delay: 0.2,
+            }}
+            style={{
+              fontSize: "0.85rem",
+              color: "var(--color-primary-dark)",
+              opacity: 0.55,
+              lineHeight: 1,
+            }}
+          >
+            ←
+          </motion.span>
+
+          {/* Centre dot */}
+          <span
+            style={{
+              width: 5,
+              height: 5,
+              borderRadius: "50%",
+              backgroundColor: "var(--color-primary)",
+              display: "block",
+              opacity: 0.6,
+            }}
+          />
+
+          {/* Right bounce arrow */}
+          <motion.span
+            animate={{ x: [4, 0, 4] }}
+            transition={{
+              duration: 1.3,
+              repeat: Infinity,
+              ease: "easeInOut",
+            }}
+            style={{
+              fontSize: "0.85rem",
+              color: "var(--color-primary-dark)",
+              opacity: 0.55,
+              lineHeight: 1,
+            }}
+          >
+            →
+          </motion.span>
+        </div>
       </motion.div>
 
-      {/* ── Decorative bottom note ── */}
+      {/* ── Closing note ── */}
       <motion.p
         custom={5}
         variants={fadeUp}
@@ -254,6 +312,7 @@ export default function Chapter1() {
           color: "var(--color-primary-dark)",
           textAlign: "center",
           opacity: 0.8,
+          lineHeight: 1.5,
         }}
       >
         a year of us — and so many more to come 🌸
