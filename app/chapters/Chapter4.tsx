@@ -14,6 +14,7 @@
 import { motion } from "framer-motion";
 import PhoneChatFrame from "../components/PhoneChatFrame";
 import InlineMusicPlayer from "../components/InlineMusicPlayer";
+import Image from "next/image";
 
 /* ── Reusable DM bubble ── */
 function Bubble({
@@ -325,7 +326,12 @@ export default function Chapter4() {
                     flexShrink: 0,
                   }}
                 >
-                  <span style={{ fontSize: "1.1rem" }}>🎵</span>
+                  <Image
+                    src="/images/slchld-cover.jpg"
+                    alt="cover"
+                    width={18}
+                    height={18}
+                  />
                 </div>
                 <div>
                   <p
@@ -354,7 +360,7 @@ export default function Chapter4() {
               {/* ── THE message that started everything ── */}
               <Bubble
                 from="them"
-                text="Suka dengerin slchld juga?"
+                text="Finally found someone who's listening slchld"
                 delay={0.72}
               />
 
@@ -363,7 +369,7 @@ export default function Chapter4() {
               {/* Fahri's reply */}
               <Bubble
                 from="me"
-                text="Iya dong 😄 kamu juga dengerin?"
+                text="I think we have a good taste in music"
                 delay={0.9}
                 isRead
               />
@@ -372,24 +378,20 @@ export default function Chapter4() {
 
               <Bubble
                 from="them"
-                text="Iya! Suka banget vibenya 🎶"
+                text="yash ofc, actually it's rare to find people who know slchld"
                 delay={1.1}
               />
 
+              <Bubble from="them" text="aku suka yang huge mood" delay={1.1} />
+
               <Bubble
                 from="me"
-                text="Favoritmu lagu apa?"
+                text="yaa, me too, glad to know you hihihi"
                 delay={1.28}
                 isRead
               />
 
-              <Bubble
-                from="them"
-                text="Banyak haha, susah milihnya"
-                delay={1.45}
-              />
-
-              <Bubble from="me" text="Haha same 😂" delay={1.58} isRead />
+              <Bubble from="them" text="glad to know you too!" delay={1.45} />
             </div>
           </PhoneChatFrame>
         </motion.div>
