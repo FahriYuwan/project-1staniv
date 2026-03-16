@@ -1,13 +1,13 @@
 "use client";
 
 /* ─── MusicPlayer ─────────────────────────────────────────────────────────────
-   Floating bottom-right music control button.
+   Floating music control button — fixed bottom-right, sits above the dots bar.
    - Loads /music/about-you.mp3
    - Default volume: 0.25
    - Attempts autoplay on mount; gracefully falls back if browser blocks it
    - First tap after blocked autoplay starts playback
    - Toggle mute / unmute while playing
-   - Animated vinyl disc when playing
+   - Animated spinning vinyl ring while playing
 ────────────────────────────────────────────────────────────────────────────── */
 
 import { useState, useRef, useEffect, useCallback } from "react";
@@ -35,11 +35,10 @@ export default function MusicPlayer() {
           setIsPlaying(true);
         })
         .catch(() => {
-          /* Autoplay blocked by browser — show tooltip hint */
+          /* Autoplay blocked — show tooltip hint */
           setIsPlaying(false);
           setShowTooltip(true);
-          /* Hide tooltip after 4 s */
-          setTimeout(() => setShowTooltip(false), 4000);
+          setTimeout(() => setShowTooltip(false), 4500);
         });
     }
 
@@ -54,32 +53,37 @@ export default function MusicPlayer() {
     if (!audio) return;
 
     if (!isPlaying) {
-      /* Resume / start playback */
       audio.muted = false;
       setIsMuted(false);
-      audio.play().then(() => {
-        setIsPlaying(true);
-        setShowTooltip(false);
-      });
+      audio
+        .play()
+        .then(() => {
+          setIsPlaying(true);
+          setShowTooltip(false);
+        })
+        .catch(console.error);
     } else {
-      /* Toggle mute while playing */
       const next = !isMuted;
       audio.muted = next;
       setIsMuted(next);
     }
   }, [isPlaying, isMuted]);
 
-  /* ── Derive icon ── */
+  /* ── Icon & label ── */
   const icon = !isPlaying ? "▶" : isMuted ? "🔇" : "♪";
   const label = !isPlaying
     ? "Play music"
     : isMuted
-    ? "Unmute music"
-    : "Mute music";
+      ? "Unmute music"
+      : "Mute music";
 
+  /* ─────────────────────────────────────────────────────────────────────────
+     Positioning:
+       Button  → bottom: 4.5rem (72 px) — above the ~50 px dots bar
+       Tooltip → bottom: 8.5rem (136 px) — above the button
+  ───────────────────────────────────────────────────────────────────────── */
   return (
     <>
-      {/* Hidden audio element */}
       <audio
         ref={audioRef}
         src="/music/about-you.mp3"
@@ -88,26 +92,26 @@ export default function MusicPlayer() {
         aria-hidden="true"
       />
 
-      {/* Tooltip */}
+      {/* ── Tooltip ── */}
       <AnimatePresence>
         {showTooltip && (
           <motion.div
             key="tooltip"
-            initial={{ opacity: 0, y: 6, scale: 0.95 }}
+            initial={{ opacity: 0, y: 6, scale: 0.94 }}
             animate={{ opacity: 1, y: 0, scale: 1 }}
-            exit={{ opacity: 0, y: 6, scale: 0.95 }}
+            exit={{ opacity: 0, y: 6, scale: 0.94 }}
             transition={{ duration: 0.25 }}
             style={{
               position: "fixed",
-              bottom: "5rem",
-              right: "1.25rem",
-              zIndex: 51,
+              bottom: "8.5rem",
+              right: "1rem",
+              zIndex: 55,
               backgroundColor: "var(--color-bg-card)",
               border: "1px solid var(--color-primary)",
-              borderRadius: "0.75rem",
-              padding: "0.5rem 0.85rem",
-              boxShadow: "0 4px 16px rgba(114,74,36,0.15)",
-              maxWidth: 180,
+              borderRadius: "0.875rem",
+              padding: "0.55rem 0.9rem",
+              boxShadow: "0 4px 18px rgba(114,74,36,0.16)",
+              maxWidth: 190,
               pointerEvents: "none",
             }}
           >
@@ -122,13 +126,13 @@ export default function MusicPlayer() {
             >
               🎵 Tap to play our song
             </p>
-            {/* Little arrow */}
+            {/* Downward arrow pointing at the button */}
             <div
               aria-hidden="true"
               style={{
                 position: "absolute",
                 bottom: -7,
-                right: 18,
+                right: 20,
                 width: 0,
                 height: 0,
                 borderLeft: "6px solid transparent",
@@ -140,7 +144,7 @@ export default function MusicPlayer() {
         )}
       </AnimatePresence>
 
-      {/* Floating button */}
+      {/* ── Floating button ── */}
       <motion.button
         onClick={handleClick}
         whileHover={{ scale: 1.12 }}
@@ -148,8 +152,9 @@ export default function MusicPlayer() {
         aria-label={label}
         style={{
           position: "fixed",
-          bottom: "1.25rem",
-          right: "1.25rem",
+          /* Sit above the dots bar (~50 px tall) with breathing room */
+          bottom: "4.5rem",
+          right: "1rem",
           zIndex: 50,
           width: 44,
           height: 44,
@@ -160,11 +165,11 @@ export default function MusicPlayer() {
           alignItems: "center",
           justifyContent: "center",
           cursor: "pointer",
-          boxShadow: "0 4px 16px rgba(114,74,36,0.35)",
+          boxShadow: "0 4px 18px rgba(114,74,36,0.38)",
           padding: 0,
         }}
       >
-        {/* Spinning vinyl ring when playing and not muted */}
+        {/* Spinning vinyl ring while playing */}
         {isPlaying && !isMuted && (
           <motion.span
             aria-hidden="true"
@@ -174,7 +179,7 @@ export default function MusicPlayer() {
               position: "absolute",
               inset: -3,
               borderRadius: "50%",
-              border: "2px dashed rgba(217,193,157,0.45)",
+              border: "2px dashed rgba(217,193,157,0.5)",
               pointerEvents: "none",
             }}
           />

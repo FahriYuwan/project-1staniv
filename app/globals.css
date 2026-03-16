@@ -88,7 +88,9 @@ body {
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    padding: 2rem 1.25rem;
+    /* top padding clears the fixed hamburger button (~4rem),
+       bottom padding clears the fixed dots bar (~3.2rem) + breathing room */
+    padding: 5rem 1.25rem 5rem;
     position: relative;
 }
 
