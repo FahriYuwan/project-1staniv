@@ -408,6 +408,7 @@ export default function Chapter4() {
             title="slchld"
             artist="the song that brought us together"
             subtitle="reply to Fahri's story — 2 years later"
+            coverSrc="/images/slchld-cover.jpg"
           />
         </motion.div>
       </div>
