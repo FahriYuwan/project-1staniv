@@ -13,6 +13,7 @@
 
 import { motion } from "framer-motion";
 import PhoneChatFrame from "../components/PhoneChatFrame";
+import InlineMusicPlayer from "../components/InlineMusicPlayer";
 
 /* ── Reusable DM bubble ── */
 function Bubble({
@@ -44,9 +45,7 @@ function Bubble({
         style={{
           backgroundColor: isMe ? "#3797F0" : "#efefef",
           color: isMe ? "#fff" : "#262626",
-          borderRadius: isMe
-            ? "18px 18px 4px 18px"
-            : "18px 18px 18px 4px",
+          borderRadius: isMe ? "18px 18px 4px 18px" : "18px 18px 18px 4px",
           padding: "0.5rem 0.85rem",
           fontSize: "0.78rem",
           fontFamily: "'Lato', sans-serif",
@@ -377,7 +376,12 @@ export default function Chapter4() {
                 delay={1.1}
               />
 
-              <Bubble from="me" text="Favoritmu lagu apa?" delay={1.28} isRead />
+              <Bubble
+                from="me"
+                text="Favoritmu lagu apa?"
+                delay={1.28}
+                isRead
+              />
 
               <Bubble
                 from="them"
@@ -390,82 +394,21 @@ export default function Chapter4() {
           </PhoneChatFrame>
         </motion.div>
 
-        {/* ── Album cover card ── */}
+        {/* ── Inline music player ──
+            📁 Drop the audio file at: public/music/slchld.mp3
+               The player renders fine even if the file isn't there yet.      */}
         <motion.div
           initial={{ opacity: 0, y: 16 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.6, duration: 0.55 }}
-          style={{
-            display: "flex",
-            alignItems: "center",
-            gap: "0.85rem",
-            backgroundColor: "var(--color-bg-card)",
-            border: "1px solid var(--color-sand)",
-            borderRadius: "1rem",
-            padding: "0.85rem 1.1rem",
-            width: "100%",
-            boxShadow: "0 3px 14px rgba(114,74,36,0.1)",
-          }}
+          style={{ width: "100%" }}
         >
-          {/* Album art placeholder */}
-          <div
-            style={{
-              width: 52,
-              height: 52,
-              borderRadius: "0.6rem",
-              background: "linear-gradient(135deg, #1a1a1a 0%, #2e2e2e 100%)",
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "center",
-              flexShrink: 0,
-              boxShadow: "0 3px 10px rgba(0,0,0,0.25)",
-            }}
-          >
-            <span aria-hidden="true" style={{ fontSize: "1.6rem", lineHeight: 1 }}>
-              🎵
-            </span>
-          </div>
-
-          {/* Track info */}
-          <div style={{ flex: 1, minWidth: 0 }}>
-            <p
-              className="font-serif"
-              style={{
-                fontSize: "0.82rem",
-                fontWeight: 600,
-                color: "var(--color-text-primary)",
-                lineHeight: 1.3,
-                whiteSpace: "nowrap",
-                overflow: "hidden",
-                textOverflow: "ellipsis",
-              }}
-            >
-              slchld
-            </p>
-            <p
-              className="font-sans"
-              style={{
-                fontSize: "0.7rem",
-                color: "var(--color-text-muted)",
-                marginTop: 1,
-              }}
-            >
-              the song that brought us together
-            </p>
-          </div>
-
-          {/* Music note icon */}
-          <span
-            aria-hidden="true"
-            className="animate-soft-pulse"
-            style={{
-              fontSize: "1.2rem",
-              color: "var(--color-secondary)",
-              lineHeight: 1,
-            }}
-          >
-            ♪
-          </span>
+          <InlineMusicPlayer
+            src="/music/slchld.mp3"
+            title="slchld"
+            artist="the song that brought us together"
+            subtitle="reply to Fahri's story — 2 years later"
+          />
         </motion.div>
       </div>
 
