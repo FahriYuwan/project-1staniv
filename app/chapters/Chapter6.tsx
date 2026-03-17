@@ -28,8 +28,8 @@ const PHOTOS = [
   },
   {
     src: "/images/first-date-4.jpg",
-    alt: "Golden hour at the park",
-    caption: "golden hour ✨",
+    alt: "Colorful fountain lights at night",
+    caption: "lights, water, and a little magic ✨",
   },
 ];
 

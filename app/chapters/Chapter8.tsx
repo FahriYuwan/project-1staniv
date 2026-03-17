@@ -83,75 +83,28 @@ export default function Chapter8() {
               fontWeight: 600,
             }}
           >
-            Anggi yang paling aku sayangi,
+            Selamat happy anniversary sayangkuu !!,
           </p>
 
           {/* ── Body paragraphs ── */}
           <p style={{ marginBottom: "1rem" }}>
-            Aku masih ingat dengan jelas hari pertama kita bertemu. Kamu sedang
-            cosplay — tampak begitu indah dan percaya diri — dan aku, yang
-            biasanya tidak mudah memberanikan diri, entah dapat keberanian dari
-            mana untuk meminta foto bersamamu.
+            Jujur aja gak berasa ternyata kita udah satu tahun jalanin hubungan
+            wkwk, suka dan duka udah kita laluin satu tahun ini, semoga
+            tahun-tahun berikutnya lebih banyak suka nya dari tahun kemarin,
+            aamiin dan kita diberi kesabaran dalam menghadapinya.
           </p>
 
           <p style={{ marginBottom: "1rem" }}>
-            Waktu itu aku pikir itu hanya sebuah pertemuan singkat yang akan
-            segera terlupakan. Ternyata aku salah.
+            Jujur, aku bingung mau ngomongin apa disini, aku cuma mau bilang
+            terima kasih ya sayangku, kamu udah jadi yang selalu di sisi aku
+            baik disaat aku lagi suka ataupun duka, kata-kata dari kamu yang
+            selalu bikin aku tenang dikala lagi down ngebantu banget rasanya
+            buat aku jadi lebih tenang.
           </p>
 
           <p style={{ marginBottom: "1rem" }}>
-            Dua tahun kemudian, kamu membalas story Instagram-ku:{" "}
-            <em
-              className="font-handwritten"
-              style={{
-                fontSize: "1.05rem",
-                color: "var(--color-secondary)",
-                fontStyle: "normal",
-              }}
-            >
-              &ldquo;Suka dengerin slchld juga?&rdquo;
-            </em>{" "}
-            Tiga kata sederhana yang mengubah segalanya. Dari obrolan soal
-            musik, kita mulai berbicara lagi — dan kali ini, kita tidak bisa
-            berhenti.
-          </p>
-
-          <p style={{ marginBottom: "1rem" }}>
-            Braga menjadi tempat kita. Setiap kali melewati jalan itu, aku
-            selalu ingin menggenggam tanganmu sedikit lebih erat. Cahaya sore
-            di sana, aroma jalanan yang familiar, suara langkah kita berdua —
-            semua itu sekarang adalah bagian dari kita.
-          </p>
-
-          <p style={{ marginBottom: "1rem" }}>
-            First date kita di Kiara Artha Park. Aku begitu nervous waktu itu,
-            tapi kamu membuat semuanya terasa ringan dan mudah. Kamu tahu cara
-            membuat hatiku tenang hanya dengan ada di sana, di sampingku.
-          </p>
-
-          <p style={{ marginBottom: "1rem" }}>
-            Setahun bersama kamu adalah hal paling indah yang pernah aku
-            rasakan. Setiap bulan membawa kenangan baru — kenangan yang ingin
-            aku simpan seumur hidup. Tertawa bareng, dengerin musik bareng,
-            jalan-jalan tanpa tujuan yang jelas tapi selalu berasa berarti
-            karena kamu ada di sana.
-          </p>
-
-          <p style={{ marginBottom: "1rem" }}>
-            Kamu adalah seseorang yang aku pilih setiap hari. Dan setiap hari
-            aku bersyukur kamu memilihku juga.
-          </p>
-
-          <p style={{ marginBottom: "1rem" }}>
-            Kamu adalah alasan aku tersenyum di pagi hari. Kamu adalah
-            playlist-ku yang tidak pernah membosankan. Kamu adalah rumah yang
-            paling nyaman yang pernah aku temukan.
-          </p>
-
-          <p style={{ marginBottom: "1.5rem" }}>
-            Selamat satu tahun, sayangku. Semoga kita punya banyak tahun lagi
-            — penuh dengan musik, petualangan, tawa, dan tentunya Pippi, Pupu,
-            Miam, dan Piyik yang selalu menemani kita berdua.
+            Aku mau kita sama-sama lebih lama lagiii dan semoga buat kedepannya
+            kita bisa lebih kenal saling antar keluarga yaaa, hihihi.
           </p>
 
           {/* ── Sign-off ── */}
@@ -165,7 +118,7 @@ export default function Chapter8() {
                 marginBottom: "0.35rem",
               }}
             >
-              Dengan sepenuh hati,
+              Dari akuuu,
             </p>
             <p
               className="font-handwritten"
