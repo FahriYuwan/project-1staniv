@@ -2,7 +2,7 @@
 
 /* ─── Chapter 10: Plushie Family ─────────────────────────────────────────────
    The final chapter — a warm, playful tribute to the four plushies:
-   Pippi, Pupu, Miam, and Piyik.
+   Pippi, Pupu, Miam, and Piyo.
    Each plushie is displayed inside a decorative frame via <PlushieGallery />.
 ────────────────────────────────────────────────────────────────────────────── */
 
@@ -26,8 +26,8 @@ const PLUSHIES = [
     emoji: "🐱",
   },
   {
-    name: "Piyik",
-    src: "/images/plushie-piyik.jpg",
+    name: "Piyo",
+    src: "/images/plushie-piyo.jpg",
     emoji: "🐥",
   },
 ];
@@ -157,7 +157,7 @@ export default function Chapter10() {
             marginTop: "0.25rem",
           }}
         >
-          Pippi, Pupu, Miam &amp; Piyik 🤍
+          Pippi, Pupu, Miam &amp; Piyo 🤍
         </p>
       </motion.div>
 
